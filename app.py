@@ -1,11 +1,10 @@
 """PawPal+ Streamlit UI — connected to the pawpal_system backend."""
 
-import re
 from datetime import date
 
 import streamlit as st
 
-from pawpal_system import Owner, Pet, Scheduler, Task
+from pawpal_system import Owner, Pet, Scheduler, Task, TIME_PATTERN
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 
@@ -75,7 +74,7 @@ if owner.pets:
         if st.button("Add Task"):
             pet = owner.get_pet(task_pet)
             if pet and task_desc.strip():
-                if not re.match(r"^\d{2}:\d{2}$", task_time):
+                if not TIME_PATTERN.match(task_time):
                     st.error("Time must be in HH:MM format (e.g. 08:30).")
                 else:
                     pet.add_task(

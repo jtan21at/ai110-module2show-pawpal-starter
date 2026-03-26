@@ -1,10 +1,13 @@
 """PawPal+ logic layer: Task, Pet, Owner, and Scheduler classes."""
 
 import json
+import re
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 from typing import Dict, List, Optional, Tuple
 
+# Matches a valid HH:MM time string (e.g. "08:30")
+TIME_PATTERN = re.compile(r"^\d{2}:\d{2}$")
 
 @dataclass
 class Task:
@@ -220,7 +223,7 @@ class Scheduler:
         """Return the next free 30-minute slot (HH:MM) with no task, starting after_time."""
         scheduled = {task.time for _, task in self.get_all_tasks()}
         h, m = map(int, after_time.split(":"))
-        for _ in range(48):  # up to 24 hours in 30-min steps
+        for _ in range(48):  # 48 = 24 hours × 2 (one step per 30-minute interval)
             slot = f"{h:02d}:{m:02d}"
             if slot not in scheduled:
                 return slot

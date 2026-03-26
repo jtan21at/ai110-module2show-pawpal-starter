@@ -1,4 +1,4 @@
-"""Automated tests for PawPal+ core scheduling behaviours."""
+"""Automated tests for PawPal+ core scheduling behaviors."""
 
 from datetime import date, timedelta
 
